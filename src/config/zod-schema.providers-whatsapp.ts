@@ -45,6 +45,7 @@ const WhatsAppSharedSchema = z.object({
   responsePrefix: z.string().optional(),
   dmPolicy: DmPolicySchema.optional().default("pairing"),
   selfChatMode: z.boolean().optional(),
+  sendPresenceOnConnect: z.boolean().optional(),
   allowFrom: z.array(z.string()).optional(),
   defaultTo: z.string().optional(),
   groupAllowFrom: z.array(z.string()).optional(),

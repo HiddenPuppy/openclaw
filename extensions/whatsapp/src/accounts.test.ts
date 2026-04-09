@@ -71,4 +71,40 @@ describe("resolveWhatsAppAuthDir", () => {
     expect(resolved.messagePrefix).toBe("[root]");
     expect(resolved.debounceMs).toBe(250);
   });
+
+  it("defaults connect presence off for self-chat mode", () => {
+    const resolved = resolveWhatsAppAccount({
+      cfg: {
+        channels: {
+          whatsapp: {
+            selfChatMode: true,
+          },
+        },
+      } as Parameters<typeof resolveWhatsAppAccount>[0]["cfg"],
+    });
+
+    expect(resolved.selfChatMode).toBe(true);
+    expect(resolved.sendPresenceOnConnect).toBe(false);
+  });
+
+  it("lets self-chat accounts opt back into connect presence", () => {
+    const resolved = resolveWhatsAppAccount({
+      cfg: {
+        channels: {
+          whatsapp: {
+            selfChatMode: true,
+            accounts: {
+              work: {
+                sendPresenceOnConnect: true,
+              },
+            },
+          },
+        },
+      } as Parameters<typeof resolveWhatsAppAccount>[0]["cfg"],
+      accountId: "work",
+    });
+
+    expect(resolved.selfChatMode).toBe(true);
+    expect(resolved.sendPresenceOnConnect).toBe(true);
+  });
 });

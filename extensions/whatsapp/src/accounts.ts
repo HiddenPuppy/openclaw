@@ -17,6 +17,7 @@ export type ResolvedWhatsAppAccount = {
   name?: string;
   enabled: boolean;
   sendReadReceipts: boolean;
+  sendPresenceOnConnect: boolean;
   messagePrefix?: string;
   defaultTo?: string;
   authDir: string;
@@ -130,6 +131,7 @@ export function resolveWhatsAppAccount(params: {
     name: merged.name?.trim() || undefined,
     enabled,
     sendReadReceipts: merged.sendReadReceipts ?? true,
+    sendPresenceOnConnect: merged.sendPresenceOnConnect ?? !merged.selfChatMode,
     messagePrefix: merged.messagePrefix ?? params.cfg.messages?.messagePrefix,
     defaultTo: merged.defaultTo,
     authDir,

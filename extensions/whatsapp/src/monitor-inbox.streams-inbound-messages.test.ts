@@ -127,9 +127,20 @@ describe("web monitor inbox", () => {
     await listener.close();
   });
 
-  it("stays unavailable on connect in self-chat mode", async () => {
+  it("skips connect presence by default in self-chat mode", async () => {
     const { listener, sock } = await startInboxMonitor(vi.fn(async () => {}) as InboxOnMessage, {
       selfChatMode: true,
+    });
+
+    expect(sock.sendPresenceUpdate).not.toHaveBeenCalled();
+
+    await listener.close();
+  });
+
+  it("still allows self-chat mode to opt into unavailable connect presence", async () => {
+    const { listener, sock } = await startInboxMonitor(vi.fn(async () => {}) as InboxOnMessage, {
+      selfChatMode: true,
+      sendPresenceOnConnect: true,
     });
 
     expect(sock.sendPresenceUpdate).toHaveBeenNthCalledWith(1, "unavailable");
